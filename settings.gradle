@@ -1,0 +1,3 @@
+include ':Swec'
+include ':app'
+rootProject.name = "State Aware EpoxyController"
