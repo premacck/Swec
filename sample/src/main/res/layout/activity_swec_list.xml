@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/abl_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp">
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar_star_wars_list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:contentInsetStartWithNavigation="0dp"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed"
+      app:navigationIcon="@drawable/ic_arrow_left_white"
+      app:titleTextColor="@color/white"
+      tools:title="Films" />
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <com.airbnb.epoxy.EpoxyRecyclerView
+    android:id="@+id/erv_swec_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="4dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="60dp"
+    tools:listitem="@layout/item_list" />
+</LinearLayout>
