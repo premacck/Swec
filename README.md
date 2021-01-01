@@ -155,3 +155,7 @@ class ListActivity : AppCompatActivity() {
   }
 }
 ```
+
+### Sample
+
+The sample for this library uses [Swapi SDK Revived](https://github.com/premacck/Swapi-SDK-revived) for quick & custom implementation of lists
