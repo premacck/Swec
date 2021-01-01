@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import com.airbnb.epoxy.EpoxyRecyclerView
+import com.prembros.stateawareepoxycontroller.controller.*
 import com.prembros.swapi.sample_components.*
 import com.prembros.swapi.sample_components.data.onEndlessScroll
 import com.prembros.swapi.sample_components.ui.SwapiListActivity
@@ -18,7 +19,7 @@ import timber.log.Timber
 class SwecListActivity : SwapiListActivity(R.layout.activity_swec_list) {
 
   private val swecList: EpoxyRecyclerView? by lazy { findViewById(R.id.erv_swec_list) }
-  private lateinit var swecController: SwecController<*>
+  private lateinit var controller: SwecController<*>
 
   companion object {
     fun launch(from: Context, @SWListType listType: Int) = from.startActivity(Intent(from, SwecListActivity::class.java).putExtra(LIST_TYPE, listType))
@@ -30,7 +31,7 @@ class SwecListActivity : SwapiListActivity(R.layout.activity_swec_list) {
   }
 
   override fun initRecyclerView() {
-    swecController = when (listType) {
+    controller = when (listType) {
       LIST_FILMS -> FilmController()
       LIST_PEOPLE -> PeopleController()
       LIST_PLANETS -> PlanetController()
@@ -39,10 +40,10 @@ class SwecListActivity : SwapiListActivity(R.layout.activity_swec_list) {
       LIST_VEHICLES -> VehicleController()
       else -> throw IllegalStateException("Invalid list type specified. You must specify a valid LIST_TYPE from @SWListType when launching SwecListActivity")
     }
-    swecList?.setController(swecController)
+    swecList?.setController(controller)
     endlessScrollListener = swecList?.onEndlessScroll { newPage, _ ->
       this.page = newPage
-      swecController.setLoadingMoreState()
+      controller.setLoadingMoreState()
       getStarWarsData()
     }
   }
@@ -52,26 +53,26 @@ class SwecListActivity : SwapiListActivity(R.layout.activity_swec_list) {
   }
 
   override fun onAllFilmsResponse(response: Response<SWList<Film>>) {
-    (swecController as FilmController).addData(response.body()?.results)
+    (controller as FilmController).addData(response.body()?.results)
   }
 
   override fun onAllPeopleResponse(response: Response<SWList<People>>) {
-    (swecController as PeopleController).addData(response.body()?.results)
+    (controller as PeopleController).addData(response.body()?.results)
   }
 
   override fun onAllPlanetsResponse(response: Response<SWList<Planet>>) {
-    (swecController as PlanetController).addData(response.body()?.results)
+    (controller as PlanetController).addData(response.body()?.results)
   }
 
   override fun onAllSpeciesResponse(response: Response<SWList<Species>>) {
-    (swecController as SpeciesController).addData(response.body()?.results)
+    (controller as SpeciesController).addData(response.body()?.results)
   }
 
   override fun onAllStarshipsResponse(response: Response<SWList<Starship>>) {
-    (swecController as StarshipController).addData(response.body()?.results)
+    (controller as StarshipController).addData(response.body()?.results)
   }
 
   override fun onAllVehiclesResponse(response: Response<SWList<Vehicle>>) {
-    (swecController as VehicleController).addData(response.body()?.results)
+    (controller as VehicleController).addData(response.body()?.results)
   }
 }
