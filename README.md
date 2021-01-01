@@ -10,6 +10,8 @@ An Adapter class build on top of [Epoxy](https://github.com/airbnb/epoxy/)'s [`T
 - `STATE_EMPTY` the empty state
 - `STATE_ERROR` the error state
 
+This was done to keep things simple between developers, so instead of handling different states with different conditions in lifecycle classes, we decided to handle it in controller classes, with dedicated callback functions, to improve readability & maintainence.
+
 ## Integration
 
 ### Gradle
@@ -57,6 +59,7 @@ implementation 'com.github.premacck:Swec:1.0.0'
   class MyStateAwareController : StateAwareEpoxyControllerList<Item>() {
 
   init {
+    // Use this to have the `onLoadingState()` called initially
     setLoadingState()
   }
 
@@ -98,6 +101,57 @@ class MyStateAwareController : StateAwareEpoxyControllerList<Item>(sameErrorAndE
 
   override fun onEmptyState() {
     // Handle Empty state
+  }
+}
+```
+
+- In your UI class:
+  - The `setData(data)` function takes care of setting the states for you, according to the following conditions:
+    * If the object or List is `null`, `LoadState` will be `STATE_ERROR`
+    * If the object is a list and the List is empty, the `LoadState` will be `STATE_EMPTY`
+    * If the object or List is not null or empty, `LoadState` will be `STATE_SUCCESS`
+  - But of course, you can go ahead and specify your `LoadState` explicitly as well.
+    
+- UI class implementation
+```kotlin
+class ListActivity : AppCompatActivity() {
+
+  // ...
+  private val controller by lazy { MyStateAwareController() }
+  
+  //...
+  
+  private fun initRecyclerView() {
+    epoxyyRecyclerView.setController(controller)
+  }
+  
+  private fun fetchData() {
+    someNetworkCall { response ->
+      // Assuming response.data is a list of items
+      setData(response.data)
+    }
+  }
+  
+  private fun setData(list: List<Items>?) {
+    // This will handle the STATE_SUCCESS, STATE_ERROR & STATE_EMPTY automatically according to the logic explained above
+    controller.setData(list)
+
+    // You can also set state with data
+    // controller.setData(list, STATE_SUCCESS)
+  }
+  
+  private fun handleError() {
+    controller.setData(null)
+
+    // You can also set state with data
+    // controller.setData(null, STATE_ERROR)
+  }
+  
+  private fun handleEmpty() {
+    controller.setData(emptyList())
+
+    // You can also set state with data
+    // controller.setData(null, STATE_EMPTY)
   }
 }
 ```
