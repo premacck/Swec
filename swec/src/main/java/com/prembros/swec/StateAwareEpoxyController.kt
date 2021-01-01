@@ -9,7 +9,7 @@ import com.airbnb.epoxy.Typed2EpoxyController
  * Common class for all the [EpoxyController]s that have a [List] and want to be state aware,
  * to handle [STATE_LOADING], [STATE_SUCCESS], [STATE_EMPTY], and [STATE_ERROR] states of data
  */
-abstract class SwecAdapter<DATA_TYPE>(private val sameErrorAndEmptyStates: Boolean = true) : Typed2EpoxyController<DATA_TYPE, Int>() {
+abstract class StateAwareEpoxyController<DATA_TYPE>(private val sameErrorAndEmptyStates: Boolean = true) : Typed2EpoxyController<DATA_TYPE, Int>() {
 
   var currentData: DATA_TYPE? = null
 
@@ -71,7 +71,7 @@ abstract class SwecAdapter<DATA_TYPE>(private val sameErrorAndEmptyStates: Boole
   protected open fun onErrorOrEmptyState(data: DATA_TYPE?) {}
 
   /**
-   * Open Function to set the data in [SwecAdapter] without having to pass in the [LoadState]
+   * Open Function to set the data in [StateAwareEpoxyController] without having to pass in the [LoadState]
    * If the object or List is null, [LoadState] will be [STATE_ERROR]
    * If the object is a list and the List is empty, the [LoadState] will be [STATE_EMPTY]
    * If the object or List is not null or empty, [LoadState] will be [STATE_SUCCESS]
@@ -96,7 +96,7 @@ abstract class SwecAdapter<DATA_TYPE>(private val sameErrorAndEmptyStates: Boole
   open fun setData() = setData(currentData)
 
   /**
-   * Function to set [STATE_LOADING] in a [SwecAdapter]
+   * Function to set [STATE_LOADING] in a [StateAwareEpoxyController]
    */
   fun setLoadingState() {
     cancelPendingModelBuild()
@@ -104,7 +104,7 @@ abstract class SwecAdapter<DATA_TYPE>(private val sameErrorAndEmptyStates: Boole
   }
 
   /**
-   * Function to set [STATE_LOADING_MORE] in a [SwecAdapter]
+   * Function to set [STATE_LOADING_MORE] in a [StateAwareEpoxyController]
    */
   fun setLoadingMoreState() {
     cancelPendingModelBuild()

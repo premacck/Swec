@@ -9,4 +9,4 @@ import com.airbnb.epoxy.EpoxyController
  * and when you are feeling too lazy to write `SwecAdapter<List<DataModel>` again & again
  * and instead just want to Simplify it to `SwecAdapterList<DataModel>`.
  */
-abstract class SwecAdapterList<CLASS_OF_LIST>(sameErrorAndEmptyStates: Boolean = true) : SwecAdapter<List<CLASS_OF_LIST>>(sameErrorAndEmptyStates)
+abstract class StateAwareEpoxyControllerList<CLASS_OF_LIST>(sameErrorAndEmptyStates: Boolean = true) : StateAwareEpoxyController<List<CLASS_OF_LIST>>(sameErrorAndEmptyStates)
