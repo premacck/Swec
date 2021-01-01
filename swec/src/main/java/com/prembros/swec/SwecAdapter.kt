@@ -27,6 +27,7 @@ abstract class SwecAdapter<DATA_TYPE>(private val sameErrorAndEmptyStates: Boole
     onPreLoadState(data, loadState)
     when (loadState) {
       STATE_LOADING -> onLoadingState()
+      STATE_LOADING_MORE -> data?.let { onLoadingMoreState(it) }
       STATE_SUCCESS -> onSuccessState(data)
       STATE_EMPTY -> if (sameErrorAndEmptyStates) onErrorOrEmptyState(data) else onEmptyState()
       STATE_ERROR -> if (sameErrorAndEmptyStates) onErrorOrEmptyState(data) else onErrorState()
@@ -50,6 +51,12 @@ abstract class SwecAdapter<DATA_TYPE>(private val sameErrorAndEmptyStates: Boole
 
   /** Optional callback for [STATE_LOADING] state */
   protected open fun onLoadingState() {}
+
+  /**
+   * Function to be executed on `onLoadMore()` type function invocations,
+   * useful for showing progressbar at the bottom of the list in case of pagination
+   */
+  protected open fun onLoadingMoreState(data: DATA_TYPE) {}
 
   /** Optional callback for [STATE_SUCCESS] state */
   protected open fun onSuccessState(data: DATA_TYPE?) {}
@@ -95,5 +102,12 @@ abstract class SwecAdapter<DATA_TYPE>(private val sameErrorAndEmptyStates: Boole
     cancelPendingModelBuild()
     setData(null, STATE_LOADING)
   }
-}
 
+  /**
+   * Function to set [STATE_LOADING_MORE] in a [SwecAdapter]
+   */
+  fun setLoadingMoreState() {
+    cancelPendingModelBuild()
+    setData(currentData, STATE_LOADING_MORE)
+  }
+}
