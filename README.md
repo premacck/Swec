@@ -3,6 +3,9 @@
 
 [![](https://jitpack.io/v/premacck/Swec.svg)](https://jitpack.io/#premacck/Swec)
 
+[![](https://androidweekly.net/issues/issue-447/badge)](https://androidweekly.net/issues/issue-447)
+
+
 An Adapter class build on top of [Epoxy](https://github.com/airbnb/epoxy/)'s [`Typed2EpoxyController`](https://github.com/airbnb/epoxy/blob/master/epoxy-adapter/src/main/java/com/airbnb/epoxy/Typed2EpoxyController.java), which handles the following states:
 - `STATE_LOADING` for the initial, loading state
 - `STATE_LOADING_MORE` in case of pagination, to show a loader after the list items
